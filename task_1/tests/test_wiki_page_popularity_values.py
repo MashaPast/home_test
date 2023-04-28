@@ -9,8 +9,7 @@ from pytest_check import check
                           10 ** 8,
                           5 * 10 ** 8,
                           10 ** 9,
-                          1.5 * 10 ** 9
-                          ])
+                          1.5 * 10 ** 9])
 def test_popularity(browser, expected_popularity_value, get_table_data):
     for row in get_table_data.rows:
         with check:

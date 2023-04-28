@@ -11,6 +11,13 @@ class BaseElement(ABC):
     def __init__(self, locator: tuple):
         self.locator = locator
 
+    def find_element(self, time=config["default"]["timeout"]):
+        return WebDriverWait(BaseElement.driver, time).until(EC.element_to_be_clickable(self.locator),
+                                                             message=f"Can't find element by locator {self.locator}")
+
     def find_elements(self, time=config["default"]["timeout"]):
         return WebDriverWait(BaseElement.driver, time).until(EC.presence_of_all_elements_located(self.locator),
                                                              message=f"Can't find elements by locator {self.locator}")
+
+    def get_text(self):
+        return self.find_element().text

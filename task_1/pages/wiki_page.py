@@ -1,33 +1,34 @@
 from selenium.webdriver.common.by import By
 from task_1.base_items.base_page import BasePage
-from task_1.elements.table import Table
+from task_1.elements.table import TableElement, TableRows, TableColumns
 
 from task_1.helpers.helper_functions import modify_string
 from task_1.models.table_dataclasses import ProgrammingLanguagesTableRaw, ProgrammingLanguagesTable
 
 
 class WikiPage(BasePage):
-    WEBSITES = Table((By.XPATH, "//table[@class='wikitable sortable jquery-tablesorter'][1]/tbody/tr/td[1]"))
-    PROGRAMMING_LANG = Table((By.XPATH, "//table[@class='wikitable sortable jquery-tablesorter'][1]/tbody/tr/td[2]"))
-    FRONTEND = Table((By.XPATH, "//table[@class='wikitable sortable jquery-tablesorter'][1]/tbody/tr/td[3]"))
-    BACKEND = Table((By.XPATH, "//table[@class='wikitable sortable jquery-tablesorter'][1]/tbody/tr/td[4]"))
+    TABLEROWS = TableRows((By.XPATH, "//table[@class='wikitable sortable jquery-tablesorter'][1]/tbody/tr"))
+    TABLECOLUMNS = TableColumns((By.XPATH, "//table[@class='wikitable sortable jquery-tablesorter'][1]/tbody/tr[1]/td"))
 
     def __init__(self):
         super().__init__()
 
-    def get_popularity_values(self):
-        elements_with_websites = self.WEBSITES.find_elements()
-        elements_with_popularity_values = self.PROGRAMMING_LANG.find_elements()
-        elements_with_frontend_technologies = self.FRONTEND.find_elements()
-        elements_with_backend_technologies = self.BACKEND.find_elements()
+    def get_four_columns_data(self):
 
-        websites = []
-        for i in range(len(elements_with_websites)):
-            table_raw = ProgrammingLanguagesTableRaw(website_name=elements_with_websites[i].text,
-                                                     popularity=int(
-                                                         modify_string(elements_with_popularity_values[i].text)),
-                                                     frontend=elements_with_frontend_technologies[i].text,
-                                                     backend=elements_with_backend_technologies[i].text)
-            websites.append(table_raw)
+        len_rows = self.TABLEROWS.get_length()
+        len_cols = self.TABLECOLUMNS.get_length()
+        list_of_rows = []
+        for r in range(1, len_rows + 1):
+            row = []
+            for c in range(1, len_cols - 1):
+                value_from_table = TableElement((By.XPATH,
+                                                 f"//table[@class='wikitable sortable jquery-tablesorter'][1]"
+                                                 f"/tbody/tr[{r}]/td[{c}]")).get_text()
+                row.append(value_from_table)
+            table_row = ProgrammingLanguagesTableRaw(website_name=modify_string(row[0]),
+                                                     popularity=int(modify_string(row[1])),
+                                                     frontend=modify_string(row[2]), backend=modify_string(row[3]))
+            list_of_rows.append(table_row)
 
-        return ProgrammingLanguagesTable(rows=websites)
+        return ProgrammingLanguagesTable(rows=list_of_rows)
+
