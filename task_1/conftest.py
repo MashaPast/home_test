@@ -24,5 +24,5 @@ def get_table_data():
     log.info('Opening page')
     wiki_page = WikiPage()
     wiki_page.open(config["default"]["url"])
-    websites = wiki_page.get_four_columns_data()
-    yield websites
+    table_data = wiki_page.get_four_columns_data()
+    yield table_data

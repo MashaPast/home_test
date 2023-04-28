@@ -13,5 +13,4 @@ class ProgrammingLanguagesTableRaw:
 @dataclass
 class ProgrammingLanguagesTable:
     rows: List[ProgrammingLanguagesTableRaw]
-    index = 0
 

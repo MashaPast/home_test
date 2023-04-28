@@ -1,4 +1,6 @@
 from enum import Enum
+from typing import Union
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
@@ -15,7 +17,7 @@ class SupportedBrowsers(Enum):
 class Browser:
 
     @staticmethod
-    def get_browser_by_name(browser_name: str):
+    def get_browser_by_name(browser_name: str) -> Union[webdriver.Chrome, webdriver.Firefox]:
         if browser_name == SupportedBrowsers.Chrome.value:
             return Chrome.get_driver()
         if browser_name == SupportedBrowsers.Firefox.value:
@@ -26,11 +28,10 @@ class Chrome(Browser):
     instance = None
 
     @staticmethod
-    def get_driver():
+    def get_driver() -> webdriver.Chrome:
         log.debug('Get Chrome driver')
         if Chrome.instance is None:
             Chrome.instance = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-
             return Chrome.instance
         else:
             return Chrome.instance
@@ -40,7 +41,7 @@ class Firefox(Browser):
     instance = None
 
     @staticmethod
-    def get_driver():
+    def get_driver() -> webdriver.Firefox:
         log.debug('Get Firefox driver')
         if Firefox.instance is None:
             Firefox.instance = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))

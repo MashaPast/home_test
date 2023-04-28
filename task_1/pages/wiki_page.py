@@ -13,7 +13,7 @@ class WikiPage(BasePage):
     def __init__(self):
         super().__init__()
 
-    def get_four_columns_data(self):
+    def get_four_columns_data(self) -> ProgrammingLanguagesTable:
 
         len_rows = self.TABLEROWS.get_length()
         len_cols = self.TABLECOLUMNS.get_length()
@@ -27,7 +27,7 @@ class WikiPage(BasePage):
                 row.append(value_from_table)
             table_row = ProgrammingLanguagesTableRaw(website_name=modify_string(row[0]),
                                                      popularity=int(modify_string(row[1])),
-                                                     frontend=modify_string(row[2]), backend=modify_string(row[3]))
+                                                     frontend=row[2], backend=row[3])
             list_of_rows.append(table_row)
 
         return ProgrammingLanguagesTable(rows=list_of_rows)
