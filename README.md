@@ -33,5 +33,5 @@ pytest -s -v task_1/tests/test_wiki_page_popularity_values.py
 ## Task 2
 Запустить тесты:
 ```
-pytest -s -v task_2/tests --noconftest
+pytest -s -v task_2/tests
 ```
