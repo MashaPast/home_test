@@ -1,6 +1,14 @@
 from typing import List
 from task_2.figure import Circle, Triangle, Rectangle, Figure
-from task_2.helpers.colors import AvailableColors
+from task_2.helpers.colors import AvailableColors, available_colors_names
+
+
+class NoSuchColorError(ValueError):
+    def __init__(self, new_color):
+        self.new_color = new_color
+
+    def __str__(self):
+        return f"No such color {self.new_color}. Choose from available colors {available_colors_names}"
 
 
 class Engine2D:
@@ -73,7 +81,5 @@ class Engine2D:
         ValueError: If new color is not available.
         """
         if not (new_color.lower() in AvailableColors.__members__):
-            raise ValueError(f"No such color {new_color}. "
-                             f"Choose from these colors {tuple(AvailableColors.__members__.keys())}")
+            raise NoSuchColorError(new_color)
         self.current_color = new_color.lower()
-

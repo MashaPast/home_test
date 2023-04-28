@@ -14,3 +14,6 @@ class AvailableColors(Enum):
     pink = 9
     brown = 10
     grey = 11
+
+
+available_colors_names = tuple(AvailableColors.__members__.keys())

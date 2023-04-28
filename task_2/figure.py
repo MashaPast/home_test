@@ -3,6 +3,27 @@ from abc import ABC
 from task_2.helpers.colors import AvailableColors
 
 
+class NoSuchCircleError(ValueError):
+    def __str__(self):
+        return "Such circle does not exist, radius must be greater then 0"
+
+
+class NoSuchTriangleError(ValueError):
+    def __str__(self):
+        return "Such triangle does not exist. The sum of any two sides must be greater than the third"
+
+
+class RectangleZeroSideLength(ValueError):
+
+    def __str__(self):
+        return "Such rectangle does not exist. None of the sides can be equal to 0 or less"
+
+
+class RectangleWrongSideLength(ValueError):
+    def __str__(self):
+        return "Such rectangle does not exist. Length must be greater than width"
+
+
 class Figure(ABC):
 
     def __init__(self, color: str):
@@ -16,7 +37,7 @@ class Circle(Figure):
     def __init__(self, color: str, center_point: tuple, radius: int):
         super().__init__(color)
         if radius <= 0:
-            raise ValueError("Such circle does not exist, radius must be greater then 0")
+            raise NoSuchCircleError
         self.center_point = center_point
         self.radius = radius
 
@@ -34,7 +55,7 @@ class Triangle(Figure):
     def __init__(self, color: str, a: int, b: int, c: int):
         super().__init__(color)
         if not (a + b > c and a + c > b and b + c > a):
-            raise ValueError("Such triangle does not exist. The sum of any two sides must be greater than the third")
+            raise NoSuchTriangleError
         self.a = a
         self.b = b
         self.c = c
@@ -51,9 +72,9 @@ class Rectangle(Figure):
     def __init__(self, color: str, width: int, length: int):
         super().__init__(color)
         if width <= 0 or length <= 0:
-            raise ValueError("Such rectangle does not exist. None of the sides can be equal to 0 or less")
+            raise RectangleZeroSideLength
         elif length < width:
-            raise ValueError("Such rectangle does not exist. Length must be greater than width")
+            raise RectangleWrongSideLength
         self.width = width
         self.length = length
 

@@ -1,5 +1,5 @@
 import pytest
-from task_2.engine import Engine2D
+from task_2.engine import Engine2D, NoSuchColorError
 from task_2.helpers.colors import AvailableColors
 
 
@@ -26,6 +26,13 @@ class TestEngine2D:
 
     def test_change_color(self):
         e = Engine2D()
+        e.change_color(new_color=AvailableColors.white.name)
+        e.add_rectangle(width=5, length=10)
+
+        assert e.canvas[0].color == AvailableColors.white.name
+
+    def test_change_color_after_adding_figure(self):
+        e = Engine2D()
         e.add_circle(center_point=(0, 1), radius=5)
         e.change_color(new_color=AvailableColors.white.name)
         e.add_rectangle(width=5, length=10)
@@ -36,7 +43,5 @@ class TestEngine2D:
     def test_negative_change_color(self):
         invalid_color: str = "no_such_color"
         e = Engine2D()
-        with pytest.raises(ValueError) as error:
+        with pytest.raises(NoSuchColorError):
             e.change_color(invalid_color)
-        assert str(error.value) == f"No such color {invalid_color}. " \
-                                   f"Choose from these colors {tuple(AvailableColors.__members__.keys())}"
